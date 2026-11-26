@@ -1,26 +1,171 @@
 @import "tailwindcss";
 
+/* Dark mode is driven by data-theme on <html> (set before paint by the script in layout.tsx). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------- Colour tokens ----------
+   One accent (muted brass, a quieter take on Pitt gold), hairline structure, no pure black or white.
+   Every pair measured with WCAG 2.1 and APCA (Lc):
+     dark   fg 16.3:1 / Lc 96 · muted 9.9:1 / Lc 65 · subtle 7.4:1 / Lc 51 · accent 9.7:1 / Lc 64
+     light  fg 17.4:1 / Lc 100 · muted 7.0:1 / Lc 81 · subtle 5.2:1 / Lc 73 · accent 5.5:1 / Lc 75 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f7f7f5;
+  --bg-elev: #ffffff;
+  --fg: #121214;
+  --muted: #54545a;
+  --subtle: #68686f;
+  --line: #e4e4e0;
+  --line-strong: #cbcbc6;
+  --accent: #7f5f00;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(127 95 0 / 0.08);
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root[data-theme="dark"] {
+  --bg: #0f0f10;
+  --bg-elev: #161618;
+  --fg: #ededeb;
+  --muted: #bababf;
+  --subtle: #a0a0a6;
+  --line: #26262a;
+  --line-strong: #3a3a40;
+  --accent: #d9b54a;
+  --accent-fg: #0f0f10;
+  --accent-soft: rgb(217 181 74 / 0.1);
+  color-scheme: dark;
 }
 
+/* No-JS fallback: follow the system setting. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme]) {
+    --bg: #0f0f10;
+    --bg-elev: #161618;
+    --fg: #ededeb;
+    --muted: #bababf;
+    --subtle: #a0a0a6;
+    --line: #26262a;
+    --line-strong: #3a3a40;
+    --accent: #d9b54a;
+    --accent-fg: #0f0f10;
+    --accent-soft: rgb(217 181 74 / 0.1);
+    color-scheme: dark;
   }
 }
 
+/* ---------- Type ----------
+   Hubot Sans (display), Mona Sans (text), Martian Mono (labels). One superfamily plus a mono,
+   all open source. Width axes do the expressive work instead of a second display face. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-hubot), var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-display--font-variation-settings: "wdth" 110;
+  --font-mono: var(--font-martian), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono--font-variation-settings: "wdth" 87.5;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+/* Lenis (smooth scrolling) does the smoothing itself; native smooth-scroll would fight it. */
+html.lenis {
+  scroll-behavior: auto;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Underline that draws in on hover */
+.link-underline {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 320ms var(--ease-out-expo), color 160ms;
+}
+.link-underline:hover,
+.link-underline:focus-visible,
+.group:hover .link-underline {
+  background-size: 100% 1px;
+}
+
+/* Typing caret */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret-blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Faint ruled lines in the page gutters (wide screens only) */
+.gutter-rules {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 47px,
+    var(--line) 47px,
+    var(--line) 48px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .caret-blink {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

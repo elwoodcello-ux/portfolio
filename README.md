@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Andrew Elwood · personal site
 
-## Getting Started
+My portfolio: Next.js (App Router) + Tailwind CSS v4 + Motion + Lenis, deployed on Vercel.
 
-First, run the development server:
+## Editing the content
+
+Almost everything you'd want to change lives in **one file**: [`src/content/site.ts`](src/content/site.ts).
+
+| Want to change… | Edit |
+| --- | --- |
+| Bio, facts, skills | `about` |
+| Jobs / internships | `experience` |
+| Projects, stats, links | `projects` (add `links: [{ label: "Live site", href: "https://…" }]`) |
+| The rotating hero line | `heroPhrases` |
+| The NEXT / NOW / STUDYING strip | `heroMeta` |
+| Email, LinkedIn, GitHub, "open to" line | `site` |
+| Headshot | put `me.jpg` in `public/` and set `photo: "/me.jpg"` |
+| Resume PDFs | replace the files in `public/resume/` (keep the same names) |
+
+Push to `main` and Vercel redeploys automatically in about a minute.
+
+## Running it on your computer
+
+You need [Node.js](https://nodejs.org) 20 or newer.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000. The page reloads as you edit.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Type:** Hubot Sans (display), Mona Sans (text), Martian Mono (labels). All open source, self-hosted from npm.
+- **Colour:** one accent (muted brass, a quieter Pitt gold), hairline structure. Every text colour is checked with WCAG 2.1 and APCA; the numbers are in `src/app/globals.css`.
+- **Motion:** smooth scrolling (Lenis) and scroll-linked effects (Motion). Everything turns off for visitors with "reduce motion" enabled.
+- **Light / dark:** follows the visitor's system setting, with a toggle in the nav.
 
-## Learn More
+## Custom domain (later)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Buy a domain, then in Vercel: Project → Settings → Domains → Add. Share-preview and SEO URLs pick it up automatically.

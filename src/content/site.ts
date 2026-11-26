@@ -167,7 +167,7 @@ export const projects: Project[] = [
       { value: "2 calls, not 4", label: "translations per sentence" },
     ],
     tech: ["TypeScript", "Next.js", "ElevenLabs", "WebRTC", "Socket.IO"],
-    links: [],
+    links: [{ label: "fluidtechnology.tech", href: "https://www.fluidtechnology.tech/" }],
   },
   {
     name: "Chicago Food Inspections",

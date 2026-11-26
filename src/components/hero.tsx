@@ -94,7 +94,7 @@ export function Hero() {
                   height={1200}
                   priority
                   sizes="(min-width: 1280px) 300px, (min-width: 1024px) 260px, 112px"
-                  className="h-[140px] w-[112px] border border-line object-cover lg:h-[325px] lg:w-[260px] xl:h-[375px] xl:w-[300px]"
+                  className="h-[140px] w-[112px] object-cover outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 lg:h-[325px] lg:w-[260px] xl:h-[375px] xl:w-[300px]"
                 />
               </motion.div>
             </motion.div>
@@ -134,7 +134,7 @@ export function Hero() {
             href={resume.href}
             target="_blank"
             rel="noopener"
-            className="group inline-flex min-h-11 items-center gap-2 bg-accent px-5 text-sm font-semibold text-accent-fg transition-opacity duration-150 hover:opacity-90"
+            className="group inline-flex min-h-11 items-center gap-2 bg-accent px-5 text-sm font-semibold text-accent-fg transition-[opacity,scale] duration-150 hover:opacity-90 active:scale-[0.96]"
           >
             View resume
             <ArrowUpRight
@@ -174,7 +174,7 @@ function IconLink({ href, label, children }: { href: string; label: string; chil
       aria-label={label}
       title={label}
       {...(external ? { target: "_blank", rel: "noopener" } : {})}
-      className="grid size-11 place-items-center text-subtle transition-colors duration-150 hover:text-fg"
+      className="grid size-11 place-items-center text-subtle transition-[color,scale] duration-150 hover:text-fg active:scale-[0.96]"
     >
       {children}
     </a>

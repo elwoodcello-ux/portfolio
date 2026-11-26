@@ -105,6 +105,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Balanced headlines, no orphaned last words in body text */
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+p, li, dd {
+  text-wrap: pretty;
+}
+
 ::selection {
   background: var(--accent);
   color: var(--accent-fg);
@@ -168,4 +176,9 @@ body {
   *::after {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* The command menu's search box sits inside an obviously focused dialog: no extra ring. */
+[role="combobox"]:focus-visible {
+  outline: none;
 }

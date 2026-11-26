@@ -6,6 +6,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { ThemeToggle } from "./theme-toggle";
+import { CommandTrigger } from "./command-menu";
 import { EASE_OUT } from "./motion";
 
 const sections = [
@@ -82,7 +83,7 @@ export function Nav() {
         <a
           href="#top"
           onClick={() => setOpen(false)}
-          className="group flex items-center gap-3 font-mono text-sm text-fg"
+          className="group flex min-h-10 items-center gap-3 font-mono text-sm text-fg"
         >
           {site.available ? (
             <span className="relative flex size-2" title={site.availability}>
@@ -103,7 +104,7 @@ export function Nav() {
                   href={`#${s.id}`}
                   aria-current={active === s.id ? "true" : undefined}
                   className={cn(
-                    "relative px-3 py-2 font-mono text-sm transition-colors duration-200",
+                    "relative px-3 py-2.5 font-mono text-sm transition-colors duration-200",
                     active === s.id ? "text-fg" : "text-muted hover:text-fg",
                   )}
                 >
@@ -119,11 +120,12 @@ export function Nav() {
               </li>
             ))}
           </ul>
+          <CommandTrigger className="ml-2 hidden lg:inline-flex" />
           <a
             href={resume.href}
             target="_blank"
             rel="noopener"
-            className="ml-3 inline-flex items-center gap-1.5 border border-accent px-3.5 py-2 font-mono text-xs text-accent transition-colors duration-200 hover:bg-accent hover:text-accent-fg"
+            className="ml-2 inline-flex h-9 items-center gap-1.5 border border-accent px-3.5 font-mono text-xs text-accent transition-[color,background-color,scale] duration-200 hover:bg-accent hover:text-accent-fg active:scale-[0.96]"
           >
             resume
             <ArrowUpRight className="size-3.5" aria-hidden="true" />
@@ -140,25 +142,31 @@ export function Nav() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-11 place-items-center rounded-full text-fg transition-colors hover:bg-accent-soft"
+            className="relative grid size-11 place-items-center rounded-full text-fg transition-[background-color,scale] duration-200 hover:bg-accent-soft active:scale-[0.96]"
           >
-            {open ? (
-              <X className="size-5" aria-hidden="true" />
-            ) : (
-              <Menu className="size-5" aria-hidden="true" />
-            )}
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.span
+                key={open ? "close" : "menu"}
+                className="grid place-items-center"
+                initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+                transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              >
+                {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
       </nav>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open ? (
           <motion.div
             id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: EASE_OUT }}
+            animate={{ opacity: 1, height: "auto", transition: { duration: 0.35, ease: EASE_OUT } }}
+            exit={{ opacity: 0, y: -6, transition: { duration: 0.18, ease: EASE_OUT } }}
             className="overflow-hidden md:hidden"
           >
             <ul className="px-5 pb-6 pt-2">
@@ -188,7 +196,7 @@ export function Nav() {
                     href={r.href}
                     target="_blank"
                     rel="noopener"
-                    className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-accent px-4 font-mono text-sm text-accent"
+                    className="inline-flex min-h-11 items-center gap-1.5 border border-accent px-4 font-mono text-sm text-accent transition-[scale] duration-150 active:scale-[0.96]"
                   >
                     {r.label.toLowerCase()}
                     <ArrowUpRight className="size-3.5" aria-hidden="true" />

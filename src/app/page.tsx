@@ -7,6 +7,7 @@ import { MotionProvider } from "@/components/motion";
 import { Nav } from "@/components/nav";
 import { Projects } from "@/components/projects";
 import { SmoothScroll } from "@/components/scroll-fx";
+import { CommandMenu } from "@/components/command-menu";
 import { site } from "@/content/site";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     <MotionProvider>
       <SmoothScroll />
+      <CommandMenu />
       {/* Ruled lines in the page gutters, wide screens only */}
       <div aria-hidden="true" className="pointer-events-none fixed inset-y-0 left-0 hidden w-[calc((100vw-72rem)/2)] xl:block">
         <div className="gutter-rules h-full w-full [mask-image:linear-gradient(to_left,black,transparent)]" />

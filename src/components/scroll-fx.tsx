@@ -18,6 +18,25 @@ import { EASE_OUT } from "./motion";
 /* Smooth, slightly weighted scrolling. Off for reduced-motion users   */
 /* (Lenis honours prefers-reduced-motion) and native on touch screens. */
 /* ------------------------------------------------------------------ */
+let lenisInstance: Lenis | null = null;
+
+/** Smoothly scroll to a section by id (used by the command menu). Falls back to native scrolling. */
+export function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (lenisInstance) lenisInstance.scrollTo(el, { offset: -72, force: true });
+  else el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/** Freeze page scrolling while an overlay (the command menu) is open. */
+export function lockScroll(locked: boolean) {
+  if (lenisInstance) {
+    if (locked) lenisInstance.stop();
+    else lenisInstance.start();
+  }
+  document.documentElement.style.overflow = locked ? "hidden" : "";
+}
+
 export function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
@@ -26,7 +45,11 @@ export function SmoothScroll() {
       anchors: { offset: -72 },
       stopInertiaOnNavigate: true,
     });
-    return () => lenis.destroy();
+    lenisInstance = lenis;
+    return () => {
+      lenis.destroy();
+      lenisInstance = null;
+    };
   }, []);
   return null;
 }

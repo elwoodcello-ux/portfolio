@@ -1,7 +1,16 @@
 import { ArrowUpRight } from "lucide-react";
 import { projects, site, type Project } from "@/content/site";
 import { cn } from "@/lib/cn";
+import type { ReactNode } from "react";
 import { FlowDiagram } from "./flow-diagram";
+import { ChicagoFigure, FluidFigure } from "./project-figures";
+
+// One illustration per project, keyed by project name in src/content/site.ts.
+const figures: Record<string, ReactNode> = {
+  FlowFrame: <FlowDiagram />,
+  Fluid: <FluidFigure />,
+  "Chicago Food Inspections": <ChicagoFigure />,
+};
 import { GitHubIcon } from "./icons";
 import { Reveal } from "./motion";
 import { CountUp, ScrollWidth } from "./scroll-fx";
@@ -69,7 +78,7 @@ function ProjectRow({ project: p }: { project: Project }) {
           <ul className="mt-4 flex flex-wrap gap-4">
             {p.links.map((l) => (
               <li key={l.href}>
-                <a href={l.href} target="_blank" rel="noopener" className="group inline-flex items-center gap-1 text-sm text-fg">
+                <a href={l.href} target="_blank" rel="noopener" className="group inline-flex min-h-10 items-center gap-1 text-sm text-fg">
                   <span className="link-underline">{l.label}</span>
                   <ArrowUpRight className="size-3.5 text-accent" aria-hidden="true" />
                 </a>
@@ -95,11 +104,7 @@ function ProjectRow({ project: p }: { project: Project }) {
 
         <TechList items={p.tech} label="Built with" className="mt-7" />
 
-        {p.featured ? (
-          <div className="mt-10">
-            <FlowDiagram />
-          </div>
-        ) : null}
+        {figures[p.name] ? <div className="mt-10">{figures[p.name]}</div> : null}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import { experience, type Experience as Item } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { EASE_OUT, Reveal } from "./motion";
@@ -59,7 +60,17 @@ function TimelineItem({ item, last }: { item: Item; last: boolean }) {
         <div>
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 className="font-display text-2xl font-semibold leading-tight tracking-[-0.02em] text-fg">
-              {item.company}
+              {item.href ? (
+                <a href={item.href} target="_blank" rel="noopener" className="group inline-flex items-baseline gap-1.5">
+                  <span className="link-underline">{item.company}</span>
+                  <ArrowUpRight
+                    className="size-4 self-center text-subtle transition-[color,transform] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                    aria-hidden="true"
+                  />
+                </a>
+              ) : (
+                item.company
+              )}
             </h3>
             {item.kind ? (
               <span

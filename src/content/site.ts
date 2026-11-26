@@ -18,8 +18,8 @@ export const site = {
   available: true,
   availability: "Open to software engineering & product internships",
 
-  // Optional headshot: drop a file in /public (e.g. /public/me.jpg) and set photo: "/me.jpg"
-  photo: null as string | null,
+  // Headshot in /public. Set to null to hide it.
+  photo: "/me.jpg" as string | null,
 
   links: {
     github: "https://github.com/elwoodcello-ux",
@@ -102,6 +102,7 @@ export const experience: Experience[] = [
   },
   {
     company: "FlowFrame LLC",
+    href: "https://flowframeapp.com",
     role: "Founder",
     start: "Dec 2025",
     end: "Present",
@@ -152,8 +153,7 @@ export const projects: Project[] = [
       { value: "1 person", label: "design, build, deploy" },
     ],
     tech: ["FastAPI", "PostgreSQL", "Gemini", "Stripe", "Resend", "Render"],
-    // Add your live link / repo here, e.g. { label: "Live site", href: "https://..." }
-    links: [],
+    links: [{ label: "flowframeapp.com", href: "https://flowframeapp.com" }],
     featured: true,
   },
   {

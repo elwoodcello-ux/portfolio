@@ -31,6 +31,7 @@ export function Hero() {
   const nameY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const nameOpacity = useTransform(scrollYProgress, [0.15, 0.85], [1, 0.12]);
   const lineY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const fvs = useMotionTemplate`"wdth" ${wdth}`;
   const nameStyle = reduce ? undefined : { fontVariationSettings: fvs, y: nameY, opacity: nameOpacity };
 
@@ -42,7 +43,7 @@ export function Hero() {
       className="relative pb-20 pt-28 sm:pb-28 sm:pt-32"
     >
       <Container>
-        <motion.div initial="hidden" animate="show" className="grid items-end gap-12 lg:grid-cols-[1fr_auto]">
+        <motion.div initial="hidden" animate="show" className="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-12">
           <div>
             {site.available ? (
               <motion.p variants={fade} custom={0} className="mb-7 flex items-center gap-2.5 font-mono text-xs text-subtle sm:mb-8">
@@ -83,15 +84,19 @@ export function Hero() {
           </div>
 
           {site.photo ? (
-            <motion.div variants={fade} custom={0.5} className="hidden lg:block">
-              <Image
-                src={site.photo}
-                alt={`Photo of ${site.name}`}
-                width={240}
-                height={300}
-                priority
-                className="h-[300px] w-[240px] object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
-              />
+            // Small and above the name on phones; tall portrait beside it on desktop, with a gentle parallax.
+            <motion.div variants={fade} custom={0.5} className="order-first lg:order-none">
+              <motion.div style={reduce ? undefined : { y: photoY }}>
+                <Image
+                  src={site.photo}
+                  alt={`Headshot of ${site.name}`}
+                  width={960}
+                  height={1200}
+                  priority
+                  sizes="(min-width: 1280px) 300px, (min-width: 1024px) 260px, 112px"
+                  className="h-[140px] w-[112px] border border-line object-cover lg:h-[325px] lg:w-[260px] xl:h-[375px] xl:w-[300px]"
+                />
+              </motion.div>
             </motion.div>
           ) : null}
         </motion.div>

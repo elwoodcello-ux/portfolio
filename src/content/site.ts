@@ -180,6 +180,6 @@ export const projects: Project[] = [
       { value: "87.4%", label: "passed re-inspection, avg 14.4 days" },
     ],
     tech: ["Python", "SQLite", "Pandas", "SQL"],
-    links: [],
+    links: [{ label: "Code on GitHub", href: "https://github.com/elwoodcello-ux/chicago-food-inspections" }],
   },
 ];
